@@ -5,7 +5,6 @@ module "eks" {
   cluster_name    = local.cluster_name
   cluster_version = "1.29"
 
-  enable_kms_key            = false
   cluster_encryption_config = {}
 
   vpc_id                         = module.vpc.vpc_id
