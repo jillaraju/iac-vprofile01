@@ -61,7 +61,7 @@ jobs:
         run: exit 1
 
       - name: Terraform Apply
-        id: apple
+        id: apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve -input=false -parallelism=1 planfile
 
@@ -74,9 +74,9 @@ jobs:
 
       - name: Get kubeconfig
         id: getconfig
-        if: steps.apple.outcome == 'sucess'
+        if: steps.apple.outcome == 'success'
         run: aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name ${{ env.EKS_CLUSTER }}
 
       - name: install ingress controller
-        if: steps.apple.outcome =='sucess' && steps.getconfig.outcome == 'sucess'
+        if: steps.apple.outcome =='success' && steps.getconfig.outcome == 'success'
         run: kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
